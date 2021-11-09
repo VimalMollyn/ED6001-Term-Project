@@ -1,4 +1,4 @@
 data/
 .DS_Store
 Experiments
-**/.ipnb_checkpoints/
+**/*.ipynb_checkpoints/
