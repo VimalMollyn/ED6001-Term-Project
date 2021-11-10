@@ -7,6 +7,7 @@ Link - http://brain-development.org/ixi-dataset/
 1. Nibabel
 
 ## Directory Structure
+```
 .
 ├── Preprocessing
 ├── Training
@@ -18,3 +19,4 @@ Link - http://brain-development.org/ixi-dataset/
     ├── IXI-PD
     ├── IXI-T1
     └── IXI-T2
+```
