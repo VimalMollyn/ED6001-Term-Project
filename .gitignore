@@ -1,4 +1,6 @@
 data/
+noisy/
 .DS_Store
 Experiments
 **/*.ipynb_checkpoints/
+**/*__pycache__/
