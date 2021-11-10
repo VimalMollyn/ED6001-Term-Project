@@ -5,3 +5,16 @@ Link - http://brain-development.org/ixi-dataset/
 
 ## Requirements
 1. Nibabel
+
+## Directory Structure
+.
+├── Preprocessing
+├── Training
+├── data
+│   ├── IXI-PD
+│   ├── IXI-T1
+│   ├── IXI-T2
+└── noisy
+    ├── IXI-PD
+    ├── IXI-T1
+    └── IXI-T2
