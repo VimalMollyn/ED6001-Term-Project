@@ -1,75 +1,42 @@
 import torch
 from torch.utils.data import Dataset
+from tqdm.notebook import tqdm_notebook
 import numpy as np
 
-
 class MRIDataset(Dataset):
-    def __init__(self, level):
-        print("Start reading training dataset...")
-        print("./data/patchs32_32_%d" % level)
-        free_mri_set = np.load("./data/patchs32_32_%d/free/1.npy" % level)
-        noised_mri_set = np.load("./data/patchs32_32_%d/noised/1.npy" % level)
+    def __init__(self, path_to_data, split="train"):
+        if split == "train":
+            split_indices = [*range(1, 101)]
+        elif split == "test":
+            split_indices = [*range(101, 111)]
 
-        for i in range(2, 100):
-            path1 = "./data/patchs32_32_%d/free/%d.npy" % (level, i)
-            path2 = "./data/patchs32_32_%d/noised/%d.npy" % (level, i)
-            free_temp = np.load(path1)
-            noised_temp = np.load(path2)
-            free_mri_set = np.append(free_mri_set, free_temp, axis=0)
-            noised_mri_set = np.append(noised_mri_set, noised_temp, axis=0)
+        print(f"Start reading {split}ing dataset...")
 
-        self.free_mri_set = free_mri_set
-        self.noised_mri_set = noised_mri_set
-        self.total = self.free_mri_set.shape[0]
+        # read the first set of volumes
+        clean_mri_set = np.load(path_to_data / "data/1.npy")
+        noisy_mri_set = np.load(path_to_data / "noisy/1.npy")
+
+        for i in tqdm_notebook(split_indices):
+            # load the current volumes
+            clean_mri_temp = np.load(path_to_data / f"data/{i}.npy")
+            noisy_mri_temp = np.load(path_to_data / f"noisy/{i}.npy")
+
+            # append to the existing stack
+            clean_mri_set = np.append(clean_mri_set, clean_mri_temp, axis=0)
+            noised_mri_set = np.append(noisy_mri_set, noisy_mri_temp, axis=0)
+
+        self.clean_mri_set = clean_mri_set
+        self.noisy_mri_set = noisy_mri_set
+        self.total = self.clean_mri_set.shape[0]
         self.current_patch = 1
 
-        print(self.free_mri_set.shape)
-        print("End reading trainning dataset...")
+        print(self.clean_mri_set.shape)
+        print(f"End reading {split}ing dataset...")
 
     def __len__(self):
         return self.total
 
     def __getitem__(self, index):
-        free_img = torch.from_numpy(self.free_mri_set[index]).float()
-        noised_img = torch.from_numpy(self.noised_mri_set[index]).float()
-        return {"free_img": free_img, "noised_img": noised_img}
-
-
-class MRIValidDataset(Dataset):
-    def __init__(self, level):
-        print("Start reading testing dataset...")
-        print("./data/patchs32_32_%d" % level)
-        free_mri_set = np.load("./data/patchs32_32_%d/free/101.npy" % level)
-        noised_mri_set = np.load("./data/patchs32_32_%d/noised/101.npy" % level)
-
-        for i in range(101, 111):
-            path1 = "./data/patchs32_32_%d/free/%d.npy" % (level, i)
-            path2 = "./data/patchs32_32_%d/noised/%d.npy" % (level, i)
-            free_temp = np.load(path1)
-            noised_temp = np.load(path2)
-
-            free_mri_set = np.append(free_mri_set, free_temp, axis=0)
-            noised_mri_set = np.append(noised_mri_set, noised_temp, axis=0)
-
-        self.free_mri_set = free_mri_set
-        self.noised_mri_set = noised_mri_set
-        self.total = self.free_mri_set.shape[0]
-        self.current_patch = 1
-        print(self.free_mri_set.shape)
-        print("End reading testing dataset...")
-
-    def __len__(self):
-        return self.total
-
-    def __getitem__(self, index):
-        free_img = torch.from_numpy(self.free_mri_set[index]).float()
-        noised_img = torch.from_numpy(self.noised_mri_set[index]).float()
-        return {"free_img": free_img, "noised_img": noised_img}
-
-
-def add_rice_noise(img, snr=1, mu=0.0, sigma=1):
-    level = snr * np.max(img) / 100
-    size = img.shape
-    x = level * np.random.normal(mu, sigma, size=size) + img
-    y = level * np.random.normal(mu, sigma, size=size)
-    return np.sqrt(x ** 2 + y ** 2)
+        clean_img = torch.from_numpy(self.clean_mri_set[index]).float()
+        noisy_img = torch.from_numpy(self.noisy_mri_set[index]).float()
+        return {"clean_img": clean_img, "noisy_img": noisy_img}
