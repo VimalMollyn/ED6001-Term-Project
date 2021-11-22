@@ -23,7 +23,7 @@ class MRIDataset(Dataset):
 
             # append to the existing stack
             clean_mri_set.append(clean_mri_temp)
-            noised_mri_set.append(noisy_mri_temp)
+            noisy_mri_set.append(noisy_mri_temp)
 
         self.clean_mri_set = np.concatenate(clean_mri_set, axis=0)
         self.noisy_mri_set = np.concatenate(noisy_mri_set, axis=0)
