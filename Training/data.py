@@ -25,8 +25,8 @@ class MRIDataset(Dataset):
             clean_mri_set.append(clean_mri_temp)
             noisy_mri_set.append(noisy_mri_temp)
 
-        self.clean_mri_set = np.concatenate(clean_mri_set, axis=0)
-        self.noisy_mri_set = np.concatenate(noisy_mri_set, axis=0)
+        self.clean_mri_set = clean_mri_set
+        self.noisy_mri_set = noisy_mri_set
         self.total = self.clean_mri_set.shape[0]
         self.current_patch = 1
 
