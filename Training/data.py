@@ -6,9 +6,9 @@ import numpy as np
 class MRIDataset(Dataset):
     def __init__(self, path_to_data, split="train"):
         if split == "train":
-            split_indices = [*range(0, 101)]
+            split_indices = [*range(1, 101)]
         elif split == "test":
-            split_indices = [*range(100, 111)]
+            split_indices = [*range(101, 111)]
 
         print(f"Start reading {split}ing dataset...")
 
