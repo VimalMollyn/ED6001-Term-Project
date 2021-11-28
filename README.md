@@ -12,14 +12,6 @@ Link - http://brain-development.org/ixi-dataset/
 .
 ├── Preprocessing
 ├── Training
-├── data
-│   ├── IXI-PD
-│   ├── IXI-T1
-│   ├── IXI-T2
-├── noisy
-|   ├── IXI-PD
-|   ├── IXI-T1
-|   ├── IXI-T2
 └── patches
     ├── data
     └── noisy
