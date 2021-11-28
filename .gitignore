@@ -5,3 +5,5 @@ patches/
 Experiments
 **/*.ipynb_checkpoints/
 **/*__pycache__/
+**/model/
+**/wandb/
