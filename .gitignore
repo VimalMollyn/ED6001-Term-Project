@@ -3,7 +3,10 @@ noisy/
 patches/
 .DS_Store
 Experiments
+MIA/
+mia/
 **/*.ipynb_checkpoints/
 **/*__pycache__/
 **/model/
 **/wandb/
+**/loss/
